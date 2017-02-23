@@ -5,7 +5,7 @@ def update():
     global lastUpdateTime
     if time.time() - lastUpdateTime > 15:
         score *= 0.9
-            
+        print(score)
         lastUpdateTime = time.time()
         
 karelia.botName = 'embers'
@@ -13,7 +13,7 @@ karelia.botName = 'embers'
 karelia.shortHelp = ''
 karelia.helpMessage = []
 
-room = 'xkcd'
+room = input('Room: &')
 print("Connecting...")
 conn = karelia.connectTo(room)
 print("Connected.")
@@ -27,8 +27,12 @@ while True:
     try:
         message = karelia.parse()
         if message['type'] == 'send-event' and not 'bot' in message['data']['sender']['id']:
+            print(score)
+            if message['data']['content'] == "/me stokes the embers":
+                karelia.send("/me are glowing",message['data']['id'])
+                
             score += 1
-            if score > 10:
+            if score > 20:
                 newNick = ':fire::fire::fire::fire:'
             if score > 10:
                 newNick = ':fire::fire::fire:'
@@ -39,9 +43,7 @@ while True:
             else:
                 newNick = 'embers'
                 
-        if newNick is not karelia.botName:
-            karelia.botName = newNick
-            karelia.changeNick()
+        if newNick != karelia.botName: karelia.changeNick(newNick)
         else:
             time.sleep(1)
             

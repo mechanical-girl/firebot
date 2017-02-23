@@ -28,23 +28,25 @@ while True:
         if message['type'] == 'send-event' and not 'bot' in message['data']['sender']['id']:
             #print(message)
             score += 1
+            if score > 10:
+                newNick = ':fire::fire::fire::fire:'
+            if score > 10:
+                newNick = ':fire::fire::fire:'
+            elif score > 5:
+                newNick = ':fire::fire:'
+            elif score > 1:
+                newNick = ':fire:'
+        else:
+            newNick = 'embers'
+            
+        if newNick is not karelia.botName:
+            karelia.botName = newNick
+            karelia.changeNick()
         else:
             time.sleep(1)
             
         update()
-        if score > 10:
-            newNick = ':fire::fire::fire::fire:'
-        if score > 10:
-            newNick = ':fire::fire::fire:'
-        elif score > 5:
-            newNick = ':fire::fire:'
-        elif score > 1:
-            newNick = ':fire:'
-        else:
-            newNick = 'embers'
-        if newNick is not karelia.botName:
-            karelia.botName = newNick
-            karelia.changeNick()
+
         
     except:
         print("Error: will disconnect and reconnect")

@@ -5,16 +5,6 @@ def update():
     global lastUpdateTime
     if time.time() - lastUpdateTime > 15:
         score *= 0.9
-        if score > 10:
-            karelia.changeNick(':fire::fire::fire::fire:')
-        if score > 10:
-            karelia.changeNick(':fire::fire::fire:')
-        elif score > 5:
-            karelia.changeNick(':fire::fire:')
-        elif score > 1:
-            karelia.changeNick(':fire:')
-        else:
-            karelia.changeNick('embers')
             
         lastUpdateTime = time.time()
         
@@ -31,17 +21,35 @@ print("Connected.")
 score = 0
 lastUpdateTime = time.time()
 
+newNick = karelia.botName
+
 while True:
     try:
         message = karelia.parse()
-        
+        print("packet received...")
+        print(message['type'])
         if message['type'] == 'send-event' and not 'bot' in message['data']['sender']['id']:
-            #print(message)
+            print("packet is message...")
             score += 1
+            if score > 10:
+                newNick = ':fire::fire::fire::fire:'
+            if score > 10:
+                newNick = ':fire::fire::fire:'
+            elif score > 5:
+                newNick = ':fire::fire:'
+            elif score > 1:
+                newNick = ':fire:'
+            else:
+                newNick = 'embers'
+                
+        if newNick is not karelia.botName:
+            karelia.botName = newNick
+            karelia.changeNick()
         else:
             time.sleep(1)
             
         update()
+
         
     except:
         print("Error: will disconnect and reconnect")

@@ -5,16 +5,6 @@ def update():
     global lastUpdateTime
     if time.time() - lastUpdateTime > 15:
         score *= 0.9
-        if score > 10:
-            karelia.changeNick(':fire::fire::fire::fire:')
-        if score > 10:
-            karelia.changeNick(':fire::fire::fire:')
-        elif score > 5:
-            karelia.changeNick(':fire::fire:')
-        elif score > 1:
-            karelia.changeNick(':fire:')
-        else:
-            karelia.changeNick('embers')
             
         lastUpdateTime = time.time()
         
@@ -42,6 +32,19 @@ while True:
             time.sleep(1)
             
         update()
+        if score > 10:
+            newNick = ':fire::fire::fire::fire:'
+        if score > 10:
+            newNick = ':fire::fire::fire:'
+        elif score > 5:
+            newNick = ':fire::fire:'
+        elif score > 1:
+            newNick = ':fire:'
+        else:
+            newNick = 'embers'
+        if newNick is not karelia.botName:
+            karelia.botName = newNick
+            karelia.changeNick()
         
     except:
         print("Error: will disconnect and reconnect")

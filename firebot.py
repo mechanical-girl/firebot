@@ -9,13 +9,10 @@ def update():
         score = round(score, 2)
 
 
-longestStreak = 1560
-karelia.botName = 'embers'
+longestStreak = 3180
+karelia.botName = 'embers'
 karelia.shortHelp = "/me monitors activity levels in the room"
 karelia.helpMessage = ["/me monitors activity levels in the room. Made by @PouncySilverkitten"]
-
-karelia.shortHelp = ''
-karelia.helpMessage = []
 
 room = input('Room: &')
 print("Connecting...")
@@ -34,15 +31,15 @@ while True:
     update()
     
     if score > 20:
-        newNick = ':fire::fire::fire::fire:'
+        newNick = ':fire::fire::fire::fire:'
     if score > 10:
-        newNick = ':fire::fire::fire:'
+        newNick = ':fire::fire::fire:'
     elif score > 5:
-        newNick = ':fire::fire:'
+        newNick = ':fire::fire:'
     elif score >= 1:
-        newNick = ':fire:'
+        newNick = ':fire:'
     else:
-        newNick = 'embers'
+        newNick = 'embers'
         currentStreak = time.time() - currentStreakStart
         if currentStreak > longestStreak:
             karelia.send("Congratulations, a new record was set at {0}m {1}s of flame!".format(math.floor(currentStreak/60),round((currentStreak%60))))
@@ -56,13 +53,16 @@ while True:
     nick = newNick
     
     try:
-        message = karelia.parse(False)
+        message = karelia.parse()
+        karelia.spoof(message,"embers")
         if message['type'] == 'send-event' and not 'bot' in message['data']['sender']['id']:
             if message['data']['content'] == "/me stokes the embers":
                 karelia.send("/me are glowing",message['data']['id'])
                 score += 1
             score += 1
-                
+            if 'inferno' in message['data']['content']:
+                karelia.changeNick(':fire::fire::fire::fire::fire::fire::fire::fire::fire::fire::fire::fire:')
+                time.sleep(10)
         
     except:
         print("Error: will disconnect and reconnect")

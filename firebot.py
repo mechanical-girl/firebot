@@ -1,4 +1,4 @@
-import karelia, time, math
+import karelia, time, math, sys
 
 def update():
     global score

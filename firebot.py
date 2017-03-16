@@ -14,7 +14,8 @@ karelia.botName = 'embers'
 karelia.shortHelp = "/me monitors activity levels in the room"
 karelia.helpMessage = ["/me monitors activity levels in the room. Made by @PouncySilverkitten"]
 
-room = input('Room: &')
+try: room = sys.argv[1]
+except: room = input('Room: &')
 print("Connecting...")
 conn = karelia.connectTo(room)
 print("Connected.")

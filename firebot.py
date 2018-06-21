@@ -1,72 +1,55 @@
 import karelia, time, math
 
+firebot = karelia.newBot('embers', 'xkcd')
 longestStreak = 5100
-karelia.botName = 'embers'
-karelia.shortHelp = "/me monitors activity levels in the room"
-karelia.helpMessage = ["/me monitors activity levels in the room. Made by @PouncySilverkitten"]
 
-room = input('Room: &')
-print("Connecting...")
-conn = karelia.connectTo(room)
-print("Connected.")
+firebot.stockResponses['shortHelp'] = "/me monitors activity levels in the room"
+firebot.stockResponses['longHelp'] = ["/me monitors activity levels in the room. Made by @PouncySilverkitten"]
+
 currentStreakStart = time.time()
 
 lastScore = 0
 score = 0
 lastUpdateTime = time.time()
 
-newNick = karelia.botName
-nick = newNick
+firebot.connect()
 
 while True:
-    try:
+#    try:
+#       while True:
+    firebot.parse()
+    score += 1
 
-        while True:
-            if time.time() - lastUpdateTime > 15:
-                score *= 0.75
-                lastUpdateTime = time.time()
-                score = round(score, 2)
+    if time.time() - lastUpdateTime > 15:
+        score *= 0.75
+        lastUpdateTime = time.time()
+        score = round(score, 2)
+
+        if score > 20:
+            newNick = ':fire::fire::fire::fire:'
+        if score > 10:
+            newNick = ':fire::fire::fire:'
+        elif score > 5:
+            newNick = ':fire::fire:'
+        elif score >= 1:
+            newNick = ':fire:'
+        else:
+            newNick = 'embers'
+            currentStreak = time.time() - currentStreakStart
+            if currentStreak > longestStreak:
+                firebot.send("Congratulations, a new record was set at {0}m {1}s of flame!".format(math.floor(currentStreak/60),round((currentStreak%60))))
+                longestStreak = currentStreak
+            currentStreakStart = time.time()
             
-                if score > 20:
-                    newNick = ':fire::fire::fire::fire:'
-                if score > 10:
-                    newNick = ':fire::fire::fire:'
-                elif score > 5:
-                    newNick = ':fire::fire:'
-                elif score >= 1:
-                    newNick = ':fire:'
-                else:
-                    newNick = 'embers'
-                    currentStreak = time.time() - currentStreakStart
-                    if currentStreak > longestStreak:
-                        karelia.send("Congratulations, a new record was set at {0}m {1}s of flame!".format(math.floor(currentStreak/60),round((currentStreak%60))))
-                        longestStreak = currentStreak
-                    currentStreakStart = time.time()
-                    
-                
-                lastScore = score
-                
-                if newNick != nick: karelia.changeNick(newNick)
-                nick = newNick
-            
-            message = karelia.parse()
-            karelia.spoof(message,"embers")
-            if message['type'] == 'send-event':# and not 'bot' in message['data']['sender']['id']:
-                if message['data']['content'] == "/me stokes the embers":
-                    karelia.send("/me are glowing",message['data']['id'])
-                    score += 1
-                else:
-                    print(message['data']['content'])
-                score += 1
-                if 'inferno' in message['data']['content']:
-                    karelia.changeNick(':fire::fire::fire::fire::fire::fire::fire::fire::fire::fire::fire::fire:')
-                    time.sleep(10)
-                        
-                               
-    except KareliaException as e:
-        karelia.log(e, message)
-    except Exception as e:
-        karelia.log(e, message)
-        karelia.disconnect(conn)
-    finally:
-        time.sleep(10)
+        
+        lastScore = score
+        
+        if newNick != firebot.names[0]: firebot.changeNick(newNick)
+        nick = newNick
+
+#    except:
+#        firebot.log()
+#        firebot.disconnect()
+#    finally:
+#        time.sleep(10)
+#        firebot.connect()

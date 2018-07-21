@@ -21,7 +21,7 @@ while True:
                 score += 1
             
             if time.time() - lastUpdateTime > 15:
-                score *= 0.75
+                score *=0.75
                 lastUpdateTime = time.time()
                 score = round(score, 2)
 
@@ -37,7 +37,7 @@ while True:
                     newNick = 'embers'
                     currentStreak = time.time() - currentStreakStart
                     if currentStreak > longestStreak:
-                        firebot.send("Congratulations, a new record was set at {0}m {1}s of flame!".format(math.floor(currentStreak/60),round((currentStreak%60))))
+                        firebot.send("Congratulations, a new record was set at {0}m {1}s of flame!".format(math.floor(currentStreak/60),round(currentStreak%60)))
                         longestStreak = currentStreak
                     currentStreakStart = time.time()
                     
@@ -52,4 +52,4 @@ while True:
         firebot.disconnect()
     finally:
         time.sleep(10)
-        irebot.connect()
+        firebot.connect()

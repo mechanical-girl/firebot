@@ -48,7 +48,7 @@ while True:
                 nick = newNick
 
     except:
-        firebot.log('firebot.log')
+        firebot.log()
         firebot.disconnect()
     finally:
         time.sleep(10)

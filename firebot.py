@@ -1,55 +1,47 @@
 import karelia, time, math
 
-firebot = karelia.newBot('embers', 'xkcd')
-longestStreak = 5100
+firebot = karelia.bot('embers', 'xkcd')
+longest_streak = 5100
 
-firebot.stockResponses['shortHelp'] = "/me monitors activity levels in the room"
-firebot.stockResponses['longHelp'] = "/me monitors activity levels in the room. Made by @PouncySilverkitten"
+firebot.stock_responses['short_help'] = "/me monitors activity levels in the room"
+firebot.stock_responses['long_help'] = "/me monitors activity levels in the room. Made by @PouncySilverkitten"
 
-currentStreakStart = time.time()
+streak_start = time.time()
 
-lastScore = 0
+last_score = 0
 score = 0
-lastUpdateTime = time.time()
+last_update = time.time()
 
 firebot.connect()
 
 while True:
     try:
         while True:
-            if firebot.parse()['type'] == 'send-event':
+            if firebot.parse().type == 'send-event':
                 score += 1
-            
-            if time.time() - lastUpdateTime > 15:
+
+            if time.time() - last_update > 15:
                 score *= 0.75
-                lastUpdateTime = time.time()
+                last_update = time.time()
                 score = round(score, 2)
 
-                if score > 20:
-                    newNick = ':fire::fire::fire::fire:'
-                if score > 10:
-                    newNick = ':fire::fire::fire:'
-                elif score > 5:
-                    newNick = ':fire::fire:'
-                elif score >= 1:
-                    newNick = ':fire:'
-                else:
-                    newNick = 'embers'
-                    currentStreak = time.time() - currentStreakStart
-                    if currentStreak > longestStreak:
-                        firebot.send("Congratulations, a new record was set at {0}m {1}s of flame!".format(math.floor(currentStreak/60),round((currentStreak%60))))
-                        longestStreak = currentStreak
-                    currentStreakStart = time.time()
-                    
+            if score > 20:
+                new_nick = ':fire::fire::fire::fire:'
+            if score > 10:
+                new_nick = ':fire::fire::fire:'
+            elif score > 5:
+                new_nick = ':fire::fire:'
+            elif score >= 1:
+                new_nick = ':fire:'
+            else:
+                new_nick = 'embers'
+                current_streak = time.time() - streak_start
                 
-                lastScore = score
-                
-                if newNick != firebot.names[0]: firebot.changeNick(newNick)
-                nick = newNick
+            if new_nick != firebot.names[0]: firebot.change_nick(new_nick)
 
     except:
-        firebot.log('firebot.log')
+        firebot.log(logfile = 'firebot.log')
         firebot.disconnect()
     finally:
-        time.sleep(10)
-        irebot.connect()
+        time.sleep(1)
+        firebot.connect()

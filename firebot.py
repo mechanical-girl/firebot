@@ -1,6 +1,9 @@
-import karelia, time, math
+import karelia
+import time
+import math
+import sys
 
-firebot = karelia.bot('embers', 'xkcd')
+firebot = karelia.bot(['embers', 'firebot', 'flame'], 'xkcd')
 longest_streak = 5100
 
 firebot.stock_responses['short_help'] = "/me monitors activity levels in the room"
@@ -13,6 +16,7 @@ score = 0
 last_update = time.time()
 
 firebot.connect()
+firebot.on_kill = sys.exit
 
 while True:
     try:
